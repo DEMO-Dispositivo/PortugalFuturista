@@ -1,0 +1,16 @@
+{
+  "name": "portugalfuturista",
+  "version": "1.0.0",
+  "description": "Portugal Futurista",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tiago Ângelo - DEMO",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.4",
+    "osc-min": "^1.1.1",
+    "socket.io": "^2.0.3"
+  }
+}
