@@ -1,5 +1,6 @@
 /***************** OSC com with MaxMSP ****************/
 var inport, osc, sock, udp;
+var mMessage;
 
 osc = require('osc-min');
 
@@ -19,7 +20,9 @@ console.log("OSC listener running at http://localhost:" + inport);
 sock = udp.createSocket("udp4", function(msg, rinfo) {
   var error, error1;
   try {
-    return console.log(osc.fromBuffer(msg));
+    mMessage = osc.fromBuffer(msg);
+    sendOSC();
+    return console.log(mMessage);
   } catch (error1) {
     error = error1;
     return console.log("invalid OSC packet");
@@ -55,4 +58,14 @@ function newConnection(socket){
 		console.log(data);
 	}
 
+  socket.on('oscMessage', sendOSC);
+}
+
+function sendOSC(){
+  console.log("hello");
+  message = {
+    x: mMessage.address,
+    y: mMessage.args[0].value 
+  }
+  io.sockets.emit('oscMessage', message);
 }

@@ -7,7 +7,11 @@ function setup() {
 	//socket = io.connect('http://localhost:3000');
 	socket = io.connect();
 	socket.on('mouse', newDrawing);
-	socket.on('square', drawSquare);
+	socket.on('oscMessage', parseOSC);
+}
+
+function parseOSC(){
+	console.log("receiving osc message");
 }
 
 function newDrawing(data){
