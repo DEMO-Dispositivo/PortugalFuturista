@@ -1,46 +1,72 @@
 var socket;
+var scene = 0; 
+
+var oscil; // oscillator object
+var strobe; // strobe value (B or W = 0 or 255) 
+var prob = 0; // probability in % (0..100)
 
 function setup() {
 	createCanvas(windowWidth, windowHeight);
 	background(0);
+	frameRate(24);
 
+	// Socket connection
 	//socket = io.connect('http://localhost:3000');
 	socket = io.connect();
-	socket.on('mouse', newDrawing);
 	socket.on('oscMessage', parseOSC);
+
+	// Oscillators and audio-related stuff
+	oscil = new p5.Oscillator();
+  	oscil.setType('sine');
+  	oscil.freq(1000);
+  	oscil.amp(0);
+  	oscil.start();
 }
 
-function parseOSC(){
-	console.log("receiving osc message");
-}
+function parseOSC(message){
+	//console.log("message: "+message.x+" "+message.y);
+	switch(message.x){
+		case '/scene':
+			scene = message.y;
+			console.log("scene = "+scene);
+		break;
 
-function newDrawing(data){
-	noStroke();
-	fill(255, 0, 100);
-	ellipse(data.x, data.y, 60, 60);
-}
+		case '/prob':
+			prob = message.y;
 
-function drawSquare(){
-	fill(255);
-	rect(0, 0, 150, 150);
-}
-
-function mouseDragged(){
-	console.log('Sending: ' + mouseX + ',' + mouseY);
-
-	var data = {
-		x: mouseX, 
-		y: mouseY
+		default:
+		break;
 	}
-
-	socket.emit('mouse', data);
-
-	noStroke();
-	fill(255);
-	ellipse(mouseX, mouseY, 60, 60);
 }
 
 function draw() {
-	
+	switch(scene){
+		case 0: 
+			background(0);
+		break;
+
+		case 1:
+			probStrobe();
+		break; 
+
+		case 2:
+		break;
+
+		default:
+		break;
+	}
 }
 
+function probStrobe(){ // Scene 1
+	var rnd = random(0, 100);
+	if (rnd < prob){
+    	strobe = 255;
+    	oscil.freq(random(8200, 8800) );
+  		oscil.amp(0.05);
+  	}
+  	else{
+    	strobe = 0; 
+    	oscil.amp(0);
+  	}
+  	background(strobe);
+}
