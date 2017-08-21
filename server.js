@@ -1,5 +1,5 @@
-/***************** OSC com with MaxMSP ****************/
-var inport, osc, sock, udp;
+/***************** OSC COM with MaxMSP ****************/
+var inport, outport, osc, sock, udp;
 var mMessage;
 
 osc = require('osc-min');
@@ -8,15 +8,16 @@ udp = require("dgram");
 
 if (process.argv[2] != null) {
   inport = parseInt(process.argv[2]);
+  outport = parseInt(process.argv[2]);
 } else {
   inport = 41234;
+  outport = 12000;
 }
 
 console.log("OSC listener running at http://localhost:" + inport);
+console.log("OSC sender running at http://localhost:" + outport);
 
-//~verbatim:examples[0]~
-//### A simple OSC printer;
-
+// Receive OSC messages
 sock = udp.createSocket("udp4", function(msg, rinfo) {
   var error, error1;
   try {
@@ -53,19 +54,36 @@ function newConnection(socket){
 	socket.on('mouse', mouseMsg);
 
 	function mouseMsg(data){
-		socket.broadcast.emit('mouse', data);
-		//io.sockets.emit('mouse', data);
-		console.log(data);
-	}
-
+		  //socket.broadcast.emit('mouse', data);
+		  //io.sockets.emit('mouse', data);
+      sendToMax(data, socket.id);
+  }
   socket.on('oscMessage', sendOSC);
 }
 
-function sendOSC(){ // send OSC to clients
-  //console.log("hello");
+function sendOSC(){ // send received OSC messages to clients using web sockets
   message = {
     x: mMessage.address,
     y: mMessage.args[0].value 
   }
   io.sockets.emit('oscMessage', message);
 }
+
+function sendToMax(mData, id){
+    var buf;
+    buf = osc.toBuffer({
+    address: "/mouse/" + id,
+    args: [
+      {
+        type: "integer",
+        value: mData.x
+      },
+      {
+        type: "integer",
+        value: mData.y
+      }
+    ]
+  });
+
+  return sock.send(buf, 0, buf.length, outport, "localhost"); 
+}   

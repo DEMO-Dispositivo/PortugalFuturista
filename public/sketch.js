@@ -23,6 +23,16 @@ function setup() {
   	oscil.start();
 }
 
+function mouseDragged(){
+	if(scene > 1){
+		var data = {
+			x: mouseX,
+			y: mouseY
+		}
+	}
+	socket.emit('mouse', data);
+}
+
 function parseOSC(message){
 	//console.log("message: "+message.x+" "+message.y);
 	switch(message.x){
