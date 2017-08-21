@@ -61,8 +61,8 @@ function newConnection(socket){
   socket.on('oscMessage', sendOSC);
 }
 
-function sendOSC(){
-  console.log("hello");
+function sendOSC(){ // send OSC to clients
+  //console.log("hello");
   message = {
     x: mMessage.address,
     y: mMessage.args[0].value 
