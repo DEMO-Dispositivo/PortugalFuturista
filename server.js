@@ -72,14 +72,14 @@ function sendOSC(){ // send received OSC messages to clients using web sockets
 function sendToMax(mData, id){
     var buf;
     buf = osc.toBuffer({
-    address: "/mouse/" + id,
+    address: mData.z + "/" + id,
     args: [
       {
-        type: "integer",
+        type: "float",
         value: mData.x
       },
       {
-        type: "integer",
+        type: "float",
         value: mData.y
       }
     ]
