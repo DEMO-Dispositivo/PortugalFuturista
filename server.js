@@ -59,9 +59,47 @@ function newConnection(socket){
       sendToMax(data, socket.id);
   }
   socket.on('oscMessage', sendOSC);
+  sendState(socket.id, 1); 
+  socket.on('disconnect', function(){ console.log(socket.id + " disconnected"); });
 }
 
-function sendOSC(){ // send received OSC messages to clients using web sockets
+function sendState(id, v){ // send connect/disconnect state to MaxMSP 
+  var buf;
+  switch(v){
+    // disconnected
+    case 0:
+      buf = osc.toBuffer({
+      address: "/disconnected",
+      args: [
+      {
+        type: "string",
+        value: id
+      }
+      ]
+      });
+      return sock.send(buf, 0, buf.length, outport, "localhost"); 
+      break;
+    // connected 
+    case 1: 
+      buf = osc.toBuffer({
+      address: "/connected",
+      args: [
+      {
+        type: "string",
+        value: id
+      }
+      ]
+      });
+      return sock.send(buf, 0, buf.length, outport, "localhost"); 
+      break;
+
+    default:
+      console.log("sendState(v) wrong attribute");
+      break;
+  }
+}
+
+function sendOSC(){ // send received OSC messages from MaxMSP to clients using web sockets
   message = {
     x: mMessage.address,
     y: mMessage.args[0].value 
