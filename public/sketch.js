@@ -3,7 +3,7 @@ var scene = 0;
 
 var oscil; // oscillator object
 var strobe; // strobe value (B or W = 0 or 255) 
-var prob = 0; // probability in % (0..100)
+var prob = 20; // probability in % (0..100)
 
 var slidersnames;
 var mColor;
@@ -35,6 +35,7 @@ function setup() {
 	//socket = io.connect('http://localhost:3000');
 	socket = io.connect();
 	socket.on('oscMessage', parseOSC);
+	socket.on('sendScene', setScene);
 
 	// Oscillators and audio-related stuff
 	oscil = new p5.Oscillator();
@@ -42,6 +43,11 @@ function setup() {
   	oscil.freq(1000);
   	oscil.amp(0);
   	oscil.start();
+}
+
+function setScene(sceneValue){
+	scene = sceneValue;
+	console.log("scene = "+scene);
 }
 
 function mouseDragged(){

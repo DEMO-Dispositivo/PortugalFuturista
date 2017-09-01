@@ -1,6 +1,7 @@
 /***************** OSC COM with MaxMSP ****************/
 var inport, outport, osc, sock, udp;
 var mMessage;
+var sceneValue;
 
 osc = require('osc-min');
 
@@ -59,8 +60,12 @@ function newConnection(socket){
       sendToMax(data, socket.id);
   }
   socket.on('oscMessage', sendOSC);
+  socket.on('sendScene', sendSceneValue);
+  sendSceneValue();
   sendState(socket.id, 1); 
   socket.on('disconnect', function(){ console.log(socket.id + " disconnected"); });
+
+  //setTimeout(sendSceneValue, 5000);
 }
 
 function sendState(id, v){ // send connect/disconnect state to MaxMSP 
@@ -104,7 +109,18 @@ function sendOSC(){ // send received OSC messages from MaxMSP to clients using w
     x: mMessage.address,
     y: mMessage.args[0].value 
   }
-  io.sockets.emit('oscMessage', message);
+  if(message.x == "/scene"){
+    sceneValue = message.y;
+    io.sockets.emit('sendScene', sceneValue);
+    console.log("server has state value of: "+sceneValue);
+  }
+  else{
+    io.sockets.emit('oscMessage', message);
+  }
+}
+
+function sendSceneValue(){
+  io.sockets.emit('sendScene', sceneValue);
 }
 
 function sendToMax(mData, id){
@@ -125,3 +141,4 @@ function sendToMax(mData, id){
 
   return sock.send(buf, 0, buf.length, outport, "localhost"); 
 }   
+
