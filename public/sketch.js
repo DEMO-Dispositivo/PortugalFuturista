@@ -4,6 +4,7 @@ var scene = 0;
 var oscil; // oscillator object
 var strobe; // strobe value (B or W = 0 or 255) 
 var prob = 20; // probability in % (0..100)
+var strobeCount = 0; 
 
 var slidersnames;
 var mColor;
@@ -25,7 +26,7 @@ function setup() {
 	textSize(int(windowWidth/10));
 
 	// Scene2 slider address names, colors and voice id (integer representing kick, bass, etc.)
-	slidersnames = ["/kick", "/clicks", "/noiserise", "/glitchynoise", "/bass", "/drone", "/sinebeats", "/melody"];
+	slidersnames = ["/kick", "/clicks", "/noiserise", "/glitchynoise", "/hithats", "/bass", "/sinebeats"];
  	mColor = mColor = [color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(0, 255, 255), color(255, 0, 255), color(255, 255, 0), color(255, 255, 255), color(127, 127, 127)];
 	// mColor = mColor = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [0, 255, 255], [255, 0, 255], [255, 255, 0], [255, 255, 255], [127, 127, 127] ];
 	voice = int(random(slidersnames.length));
@@ -96,6 +97,9 @@ function draw() {
 			musicalControl();
 		break;
 
+		case 3:
+			outOfControl();
+
 		default:
 		break;
 	}
@@ -125,4 +129,22 @@ function musicalControl(){
 
 	fill(red(mColor[voice]),green(mColor[voice]), blue(mColor[voice]), 255);
 	text(slidersnames[voice], windowWidth/2, windowHeight/2);
+}
+
+function outOfControl(){
+	
+	if (strobeCount){
+    	strobe = 255;
+    	oscil.freq(random(8200, 8800) );
+  		oscil.amp(0.05);
+  	}
+  	else{
+    	strobe = 0; 
+    	oscil.amp(0);
+  	}
+  	strobeCount++;
+  	strobeCount = strobeCount % 2;
+  	background(strobe);
+  	fill(255-strobe);
+  	text("you are not in control", windowWidth/2, windowHeight/2);
 }

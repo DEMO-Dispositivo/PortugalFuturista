@@ -140,7 +140,7 @@ function sendSlider2ID(mID, val){
 function sendToMax(mData, id){
     var buf;
     buf = osc.toBuffer({
-    address: mData.z + "/" + id,
+    address: mData.z,
     args: [
       {
         type: "float",
