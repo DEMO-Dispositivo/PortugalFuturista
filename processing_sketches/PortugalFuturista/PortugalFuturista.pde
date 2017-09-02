@@ -7,11 +7,11 @@ OscP5 oscP5;
 NetAddress myRemoteLocation;
 int inport = 8989;
 
-String slidersnames[] = {"Kick", "Clicks", "Noise Rise", "Glitchy Noise", "Bass", "Drone", "Sine Beats", "Melody"};
+String slidersnames[] = {"/kick", "/clicks", "/noiserise", "/glitchynoise", "/hithats", "/bass", "/sinebeats"};
 int size[] = new int[2];
 int xstart = 30; 
 int ystart = 100;
-int yseparation = 50; 
+int yseparation = 80; 
 
 void setup(){
   //size(1280, 800);
@@ -19,8 +19,8 @@ void setup(){
   background(0);
   noStroke();
   
-  size[0] = width/2-100; // slider width 
-  size[1] = 20; // slider height
+  size[0] = width-300; // slider width 
+  size[1] = 40; // slider height
   
   oscP5 = new OscP5(this,inport);
   
@@ -36,7 +36,7 @@ void setup(){
 }
 
 void draw(){
-  
+  //background(0);
 }
 
 /* incoming osc message are forwarded to the oscEvent method. */
