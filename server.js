@@ -61,9 +61,10 @@ function newConnection(socket){
   }
   socket.on('oscMessage', sendOSC);
   socket.on('sendScene', sendSceneValue);
+  socket.on('setSlider', sendSlider2ID);
   sendSceneValue();
   sendState(socket.id, 1); 
-  socket.on('disconnect', function(){ console.log(socket.id + " disconnected"); });
+  socket.on('disconnect', function(){ sendState(socket.id, 0); });
 
   //setTimeout(sendSceneValue, 5000);
 }
@@ -109,18 +110,31 @@ function sendOSC(){ // send received OSC messages from MaxMSP to clients using w
     x: mMessage.address,
     y: mMessage.args[0].value 
   }
-  if(message.x == "/scene"){
-    sceneValue = message.y;
-    io.sockets.emit('sendScene', sceneValue);
-    console.log("server has state value of: "+sceneValue);
-  }
-  else{
-    io.sockets.emit('oscMessage', message);
+  switch(message.x){
+    case "/scene":
+      sceneValue = message.y;
+      io.sockets.emit('sendScene', sceneValue);
+      console.log("server has state value of: "+sceneValue);
+    break;
+
+    case "/user":
+      sendSlider2ID(message.y, mMessage.args[1].value);
+    break;
+
+    default:
+      io.sockets.emit('oscMessage', message);
+    break;
   }
 }
 
 function sendSceneValue(){
   io.sockets.emit('sendScene', sceneValue);
+}
+
+function sendSlider2ID(mID, val){
+  //io.sockets.broadcast.to(scene2id).emit('setSlider', val);
+  io.sockets.connected[mID].emit('setSlider', val);
+  console.log("sending to specific id");
 }
 
 function sendToMax(mData, id){

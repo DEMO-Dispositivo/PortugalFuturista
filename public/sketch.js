@@ -36,6 +36,7 @@ function setup() {
 	socket = io.connect();
 	socket.on('oscMessage', parseOSC);
 	socket.on('sendScene', setScene);
+	socket.on('setSlider', selectSlider);
 
 	// Oscillators and audio-related stuff
 	oscil = new p5.Oscillator();
@@ -44,7 +45,10 @@ function setup() {
   	oscil.amp(0);
   	oscil.start();
 }
-
+function selectSlider(slider){
+	voice = slider;
+	console.log("voice = "+voice);
+}
 function setScene(sceneValue){
 	scene = sceneValue;
 	console.log("scene = "+scene);
