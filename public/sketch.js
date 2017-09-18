@@ -43,7 +43,7 @@ function setup() {
  	mColor = mColor = [color(255, 0, 0), color(0, 255, 0), color(0, 0, 255), color(0, 255, 255), color(255, 0, 255), color(255, 255, 0), color(255, 255, 255), color(127, 127, 127)];
 	// mColor = mColor = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [0, 255, 255], [255, 0, 255], [255, 255, 0], [255, 255, 255], [127, 127, 127] ];
 	voice = int(random(slidersnames.length));
-	console.log("voice id: "+voice);
+	//console.log("voice id: "+voice);
 
 	// Socket connection
 	//socket = io.connect('http://localhost:3000');
@@ -61,11 +61,11 @@ function setup() {
 }
 function selectSlider(slider){
 	voice = slider;
-	console.log("voice = "+voice);
+	//console.log("voice = "+voice);
 }
 function setScene(sceneValue){
 	scene = sceneValue;
-	console.log("scene = "+scene);
+	//console.log("scene = "+scene);
 }
 
 function mouseDragged(){
@@ -85,7 +85,7 @@ function parseOSC(message){
 	switch(message.x){
 		case '/scene':
 			scene = message.y;
-			console.log("scene = "+scene);
+			//console.log("scene = "+scene);
 		break;
 
 		case '/prob':
@@ -100,6 +100,7 @@ function draw() {
 	switch(scene){
 		case 0: 
 			background(0);
+			oscil.amp(0);
 		break;
 
 		case 1:

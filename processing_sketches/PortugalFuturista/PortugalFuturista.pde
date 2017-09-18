@@ -19,7 +19,7 @@ void setup(){
   background(0);
   noStroke();
   
-  size[0] = width-300; // slider width 
+  size[0] = width-200; // slider width 
   size[1] = 40; // slider height
   
   oscP5 = new OscP5(this,inport);
@@ -52,28 +52,28 @@ void oscEvent(OscMessage theOscMessage) {
       break;
     
     case "/kick": 
-      cp5.getController("Kick").setValue(theOscMessage.get(0).floatValue());
+      cp5.getController("/kick").setValue(theOscMessage.get(0).floatValue());
       break;
     case "/clicks": 
-      cp5.getController("Clicks").setValue(theOscMessage.get(0).floatValue());
+      cp5.getController("/clicks").setValue(theOscMessage.get(0).floatValue());
       break;
     case "/noiserise": 
-      cp5.getController("Noise Rise").setValue(theOscMessage.get(0).floatValue());
+      cp5.getController("/noiserise").setValue(theOscMessage.get(0).floatValue());
       break;
     case "/glitchynoise": 
-      cp5.getController("Glitchy Noise").setValue(theOscMessage.get(0).floatValue());
+      cp5.getController("/glitchynoise").setValue(theOscMessage.get(0).floatValue());
       break;
     case "/bass": 
-      cp5.getController("Bass").setValue(theOscMessage.get(0).floatValue());
+      cp5.getController("/bass").setValue(theOscMessage.get(0).floatValue());
       break;
     case "/drone": 
-      cp5.getController("Drone").setValue(theOscMessage.get(0).floatValue());
+      cp5.getController("/drone").setValue(theOscMessage.get(0).floatValue());
       break;
     case "/sinebeats": 
-      cp5.getController("Sine Beats").setValue(theOscMessage.get(0).floatValue());
+      cp5.getController("/sinebeats").setValue(theOscMessage.get(0).floatValue());
       break;
-    case "/melody": 
-      cp5.getController("Melody").setValue(theOscMessage.get(0).floatValue());
+    case "/hithats": 
+      cp5.getController("/hithats").setValue(theOscMessage.get(0).floatValue());
       break;
     
     default:

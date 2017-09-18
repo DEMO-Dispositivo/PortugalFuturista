@@ -114,7 +114,7 @@ function sendOSC(){ // send received OSC messages from MaxMSP to clients using w
     case "/scene":
       sceneValue = message.y;
       io.sockets.emit('sendScene', sceneValue);
-      console.log("server has state value of: "+sceneValue);
+      //console.log("server has state value of: "+sceneValue);
     break;
 
     case "/user":
@@ -134,7 +134,7 @@ function sendSceneValue(){
 function sendSlider2ID(mID, val){
   //io.sockets.broadcast.to(scene2id).emit('setSlider', val);
   io.sockets.connected[mID].emit('setSlider', val);
-  console.log("sending to specific id");
+  //console.log("sending to specific id");
 }
 
 function sendToMax(mData, id){
