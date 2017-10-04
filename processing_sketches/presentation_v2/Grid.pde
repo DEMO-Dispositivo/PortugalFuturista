@@ -70,6 +70,18 @@ class Grid{
     popMatrix();
   }
   
+  void updateMousePosition(){
+    // UPDATE KK
+    //if(mouseX < width/nDisplays){
+    if(mouseX > width/6*(sPos-1) && mouseX < width/6*sPos){  
+      // mouseX to kk_gridX
+      mPos[0] = int(mouseX / (width/nDisplays/hCells));
+      mPos[1] = int((height - mouseY) / (height/vCells));
+      grid[mPos[0]*vCells+mPos[1]] = !grid[mPos[0]*vCells+mPos[1]];
+    }
+  }
+  
+/** INIT & SETUP **********************************************************/
   private void initGrid(){ // initialize grid array
     for(int i = 0; i < hCells*vCells; i++){
       grid[i] = false;
