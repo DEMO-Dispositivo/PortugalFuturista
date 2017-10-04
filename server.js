@@ -428,7 +428,6 @@ function sendToMax(mData, id){
       break;
 
       case '/sinewaves':
-        console.log("bars = "+mData);
         buf = osc.toBuffer({
         address: adr,
         args: [
@@ -500,6 +499,26 @@ function sendToMax(mData, id){
       });
       break;
 
+      case '/glitch':
+        buf = osc.toBuffer({
+        address: adr,
+        args: [
+          {
+            type: "integer",
+            value: mData[0]
+          },
+          {
+            type: "float",
+            value: mData[1]
+          },
+          {
+            type: "float",
+            value: mData[2]
+          }
+        ]
+      });
+      break;
+
       default:
         // send empty message
         buf = osc.toBuffer({
@@ -518,7 +537,3 @@ function sendToMax(mData, id){
 
   return sock.send(buf, 0, buf.length, outport, "localhost"); 
 }   
-
-function grid2OSC(){
-
-}

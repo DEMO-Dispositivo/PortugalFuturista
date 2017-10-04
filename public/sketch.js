@@ -29,7 +29,14 @@ var bars = [];
 var barWidth;
 var s_spacing = 0.25; // space between bars in percentage
 var s_hSpacing; // space between bars in pixels  
-
+// glitch
+var vBlocks = 7; // must be an odd number 
+var hBlocks = 7; // must be an odd number
+var pSize = 2; // block size in percentage of window width
+var rand = 20; // position randomness in percentage of window width 
+var pRand; // position randomness in pixels
+var bSize; // block size in pixels
+var isOn = false; 
 
 /* NO SLEEP */
       var noSleep = new NoSleep();
@@ -80,6 +87,10 @@ function setup() {
 	// calc spacing in pixels
 	s_hSpacing = windowWidth/100.*s_spacing;
 
+	// GLITCH init
+	bSize = int(windowWidth * pSize / 100.); 
+	pRand = windowWidth * rand / 100.; 
+
 	// Scene2 slider address names, colors and voice id (integer representing kick, bass, etc.)
 	slidersnames = ["/kick", "/bass", "/snare", "/sinewaves", "/hithat", "/glitch"];
 	// mColor = mColor = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [0, 255, 255], [255, 0, 255], [255, 255, 0], [255, 255, 255], [127, 127, 127] ];
@@ -122,6 +133,7 @@ function mouseDragged(){
 	*/
 	if(scene == 2){
 		if(voice==1) b_fingerOn = 1;
+		if(voice==5) isOn = 1;
 		mouseUpdate();
 		sendData2Max();
 	} 
@@ -129,6 +141,7 @@ function mouseDragged(){
 function mousePressed(){
 	if (scene == 2){
 		if(voice==1) b_fingerOn = 1;
+		if(voice==5) isOn = 1;
 		mouseUpdate();
 		sendData2Max();
 	} 
@@ -139,6 +152,11 @@ function mouseReleased(){
 		if(voice==1){
 			b_fingerOn = 0;
 			updateBass();
+			sendData2Max();
+		}
+		if(voice==5){
+			isOn = 0;
+			updateGlitch();
 			sendData2Max();
 		}
 	}
@@ -216,6 +234,9 @@ function musicalControl(){
 			break;
 		case 3: 
 			drawSinewaves();
+			break;
+		case 5: 
+			drawGlitch();
 			break;
 
 		default:
@@ -299,6 +320,25 @@ function updateSinewaves(){
 	// console.log("bars = "+bars);
 }
 
+function drawGlitch(){
+	if(isOn){
+		for(var i = 0; i < vBlocks; i++){ // draw vertical blocks
+			for(var j = 0; j < hBlocks; j++){ //draw horizontal blocks
+				fill(random(1)*255);
+				var r;
+				var amt = pow((windowHeight - mPos[1]) / windowHeight, 2);
+				if(random(1)) r = random(pRand) * amt;
+				else r = -random(pRand) * amt;
+				rect(mPos[0] - (floor(hBlocks/2)*bSize) + j*bSize + r, mPos[1] - (floor(vBlocks/2)*bSize) + i*bSize + r, bSize, bSize);
+			}
+		}
+	}
+}
+function updateGlitch(){
+	mPos[0] = mouseX;
+	mPos[1] = mouseY;
+}
+
 // MOUSE UPDATES FOR SCENE2 
 function mouseUpdate(){
 	switch(voice){
@@ -317,6 +357,10 @@ function mouseUpdate(){
 			break;
 		case 3:
 			updateSinewaves();
+			break;
+		case 5:
+			updateGlitch();
+			break;
 
 		default:
 			break;
@@ -356,6 +400,14 @@ function sendData2Max(){
 			mouseData.push(bars);
 			// console.log(mouseData);
 			break; 
+
+		case 5: 
+			mouseData[0] = slidersnames[voice];
+			if (isOn){ mouseData[1] = 1; }
+			else{ mouseData[1] = 0; }
+			mouseData[2] = mouseX / windowWidth;
+			mouseData[3] = (windowHeight - mouseY) / windowHeight;
+			break;
 
 		default:
 			console.log("couldn't send data 2 MAXMSP");
