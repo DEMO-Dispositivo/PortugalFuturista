@@ -19,10 +19,16 @@ var grid = [];
 var hCells = 4; // num of horizontal cells in grid
 var vCells = 5; // num of vertical cells in grid
 var g_spacing = 1; // percentage of space bewteen grid cells
-var hSpacing, vSpacing; // spacing in pixels (calculated during setup)
+var g_hSpacing, g_vSpacing; // spacing in pixels (calculated during setup)
 // bass
 var squareRadius = 50; 
 var b_fingerOn = 0;
+// sinewaves
+var numBars = 16; 
+var bars = []; 
+var barWidth;
+var s_spacing = 0.25; // space between bars in percentage
+var s_hSpacing; // space between bars in pixels  
 
 
 /* NO SLEEP */
@@ -61,8 +67,18 @@ function setup() {
 		grid[i] = 0;
 	}
 	// convert spacing percentage to pixels 
-	hSpacing = windowWidth * g_spacing / 100. / 2.;
-	vSpacing = windowHeight * g_spacing / 100. / 2.;
+	g_hSpacing = windowWidth * g_spacing / 100. / 2.;
+	g_vSpacing = windowHeight * g_spacing / 100. / 2.;
+
+	// SINEWAVES init
+	// init bars array
+	for(var i = 0; i < numBars; i++){
+		bars[i] = 0.;
+	}
+	// calc barWidth
+	barWidth = windowWidth / numBars;
+	// calc spacing in pixels
+	s_hSpacing = windowWidth/100.*s_spacing;
 
 	// Scene2 slider address names, colors and voice id (integer representing kick, bass, etc.)
 	slidersnames = ["/kick", "/bass", "/snare", "/sinewaves", "/hithat", "/glitch"];
@@ -116,8 +132,8 @@ function mousePressed(){
 		mouseUpdate();
 		sendData2Max();
 	} 
-
 }
+
 function mouseReleased(){
 	if(scene==2) {
 		if(voice==1){
@@ -198,6 +214,9 @@ function musicalControl(){
 		case 1: 
 			drawBass();
 			break;
+		case 3: 
+			drawSinewaves();
+			break;
 
 		default:
 			console.log("ERROR: unknown voice for scene2");
@@ -234,7 +253,7 @@ function drawGrid(){
 				//console.log("hello");
 			}
 			else fill(0);
-			rect(x+hSpacing, y+vSpacing, windowWidth/hCells - hSpacing*2., windowHeight/vCells - vSpacing*2.);
+			rect(x+g_hSpacing, y+g_vSpacing, windowWidth/hCells - g_hSpacing*2., windowHeight/vCells - g_vSpacing*2.);
 		}
 	}
 }
@@ -266,6 +285,20 @@ function updateBass(){
 	mPos.y = mouseY;
 }
 
+function drawSinewaves(){
+	for(var i = 0; i < numBars; i++){
+		fill(255);
+		rect(i*barWidth+s_hSpacing, windowHeight, barWidth-(s_hSpacing*2.), -(bars[i]*windowHeight));
+	}
+}
+
+function updateSinewaves(){
+	mPos[0] = int(mouseX / windowWidth * numBars);
+	mPos[1] = (windowHeight-mouseY) / windowHeight;
+	bars[mPos[0]] = mPos[1]; 
+	// console.log("bars = "+bars);
+}
+
 // MOUSE UPDATES FOR SCENE2 
 function mouseUpdate(){
 	switch(voice){
@@ -282,6 +315,8 @@ function mouseUpdate(){
 		case 1:
 			updateBass();
 			break;
+		case 3:
+			updateSinewaves();
 
 		default:
 			break;
@@ -315,6 +350,12 @@ function sendData2Max(){
 			mouseData[2] = mouseX / windowWidth;
 			mouseData[3] = (windowHeight - mouseY) / windowHeight;
 			break;
+
+		case 3:
+			mouseData[0] = slidersnames[voice];
+			mouseData.push(bars);
+			// console.log(mouseData);
+			break; 
 
 		default:
 			console.log("couldn't send data 2 MAXMSP");

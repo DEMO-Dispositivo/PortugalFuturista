@@ -427,6 +427,79 @@ function sendToMax(mData, id){
       });
       break;
 
+      case '/sinewaves':
+        console.log("bars = "+mData);
+        buf = osc.toBuffer({
+        address: adr,
+        args: [
+          {
+            type: "float",
+            value: parseInt(mData[0][0])
+          },
+          {
+            type: "float",
+            value: mData[0][1]
+          },
+          {
+            type: "float",
+            value: mData[0][2]
+          },
+          {
+            type: "float",
+            value: mData[0][3]
+          },
+          {
+            type: "float",
+            value: mData[0][4]
+          },
+          {
+            type: "float",
+            value: mData[0][5]
+          },
+          {
+            type: "float",
+            value: mData[0][6]
+          },
+          {
+            type: "float",
+            value: mData[0][7]
+          },
+          {
+            type: "float",
+            value: mData[0][8]
+          },
+          {
+            type: "float",
+            value: mData[0][9]
+          },
+          {
+            type: "float",
+            value: mData[0][10]
+          },
+          {
+            type: "float",
+            value: mData[0][11]
+          },
+          {
+            type: "float",
+            value: mData[0][12]
+          },
+          {
+            type: "float",
+            value: mData[0][13]
+          },
+          {
+            type: "float",
+            value: mData[0][14]
+          },
+          {
+            type: "float",
+            value: mData[0][15]
+          }
+        ]
+      });
+      break;
+
       default:
         // send empty message
         buf = osc.toBuffer({
