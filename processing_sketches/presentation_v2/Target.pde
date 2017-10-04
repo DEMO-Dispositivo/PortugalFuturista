@@ -4,11 +4,11 @@ class Target{
   byte nDisplays = 6;
   int sPos; // screen position (1..6)
   // Target Variables
-  int mPos[] = new int[2];
+  float mPos[] = new float[2];
   color mColor;
   int sWeight = 1;
   int squareRadius = 15; 
-  boolean fingerOn = false;
+  int isOn = 0;
 /** CONSTRUCTORS *********************************************************/
   Target(int p){ // default constructor
     sPos = p;
@@ -27,11 +27,12 @@ class Target{
   
 /** FUNCTIONS ************************************************************/
   void drawUI(){
-    if(fingerOn)drawTarget();
+    if(isOn>0)drawTarget();
   }
 
   private void drawTarget(){
     pushMatrix();
+    rectMode(CORNER);
     stroke(mColor);
     strokeWeight(sWeight);
     translate(width/nDisplays*(sPos-1), 0);
@@ -42,5 +43,11 @@ class Target{
     line(0, mPos[1], width, mPos[1]);
     rect(mPos[0]-squareRadius, mPos[1]-squareRadius, squareRadius*2, squareRadius*2 );
     popMatrix();
+  }
+  
+  void updateUI(int on, float x, float y){
+    isOn = on;
+    mPos[0] = x * width;
+    mPos[1] = (1-y) * height; 
   }
 };

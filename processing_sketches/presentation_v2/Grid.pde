@@ -9,13 +9,13 @@ class Grid{
   byte sWeight = 4; 
   int hCells, vCells; // num of horizontal and vertical cells in grid
   boolean grid[] = new boolean[hCells * vCells];
-  float spacing = 5.2; // percentage of space bewteen kk_grid cells
+  float spacing = 1; // percentage of space bewteen kk_grid cells
   float hSpacing, vSpacing; // kk_spacing in pixels (calculated during setup)
   int mPos[] = new int[2]; // mouse pressed position
   
 /** CONSTRUCTORS *********************************************************/
   Grid(int p){ // default constructor
-    sPos = p;
+    sPos = p-1;
     hCells = 4;
     vCells = 5;
     mColor = color(255, 255, 255);
@@ -24,7 +24,7 @@ class Grid{
     convertSpacing();
   }
   Grid(byte p, color c){
-    sPos = p; 
+    sPos = p-1; 
     hCells = 4;
     vCells = 5;
     mColor = c;
@@ -33,7 +33,7 @@ class Grid{
     convertSpacing();
   }
   Grid(byte p, int hc, int vc){
-    sPos = p;
+    sPos = p-1;
     hCells = hc;
     vCells = vc;
     mColor = color(255, 255, 255);
@@ -42,7 +42,7 @@ class Grid{
     convertSpacing();
   }
   Grid(byte p, int hc, int vc, color c){
-    sPos = p;
+    sPos = p-1;
     hCells = hc;
     vCells = vc;
     mColor = c;
@@ -53,9 +53,10 @@ class Grid{
 /** FUNCTIONS ************************************************************/
   void drawUI(){ // draw grid
     pushMatrix();
+    rectMode(CORNER);
     stroke(mColor);
     strokeWeight(sWeight);
-    translate(width/nDisplays*(sPos-1), 0);
+    translate(width/nDisplays*(sPos), 0);
     scale(1./nDisplays, 1.);
     for(int i = hCells-1; i > -1; i--){
       float x = i*width/hCells; 

@@ -16,14 +16,14 @@ class Bars{
 
 /** CONSTRUCTORS *********************************************************/
   Bars(int p){ // default constructor
-    sPos = p;
+    sPos = p-1;
     mColor = color(255, 255, 255);
     initBarsArray();
     calcBarWidth();
     calcSpacing();
   }
   Bars(byte p, byte nb){
-    sPos = p; 
+    sPos = p-1; 
     numBars = nb; 
     mColor = color(255, 255, 255);
     initBarsArray();
@@ -31,7 +31,7 @@ class Bars{
     calcSpacing();
   }
   Bars(byte p, byte nb, color c){
-    sPos = p; 
+    sPos = p-1; 
     numBars = nb; 
     mColor = c;
     initBarsArray();
@@ -42,12 +42,13 @@ class Bars{
 /** FUNCTIONS ************************************************************/
   void drawUI(){
     pushMatrix();
+    rectMode(CORNER);
     stroke(mColor);
     noStroke();
     fill(mColor);
-    translate(width/nDisplays*(sPos-1), 0);
+    translate(width/nDisplays*(sPos), 0);
     scale(1./nDisplays, 1.);
-    for(byte i = 0; i < numBars; i++){
+    for(int i = 0; i < numBars; i++){
       fill(255);
       rect(i*barWidth+hSpacing, height, barWidth-(hSpacing*2.), -(bars[i]*height));
     }
@@ -80,6 +81,6 @@ class Bars{
   }
   
   private void calcSpacing(){
-    hSpacing = int(width/100*spacing);
+    hSpacing = int(width/100.*spacing);
   }
 };
