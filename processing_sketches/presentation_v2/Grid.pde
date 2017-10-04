@@ -51,10 +51,11 @@ class Grid{
     convertSpacing();
   }
 /** FUNCTIONS ************************************************************/
-  void drawGrid(){ // draw grid
+  void drawUI(){ // draw grid
     pushMatrix();
     stroke(mColor);
     strokeWeight(sWeight);
+    translate(width/nDisplays*(sPos-1), 0);
     scale(1./nDisplays, 1.);
     for(int i = hCells-1; i > -1; i--){
       float x = i*width/hCells; 
@@ -71,9 +72,8 @@ class Grid{
   }
   
   void updateMousePosition(){
-    // UPDATE KK
     //if(mouseX < width/nDisplays){
-    if(mouseX > width/6*(sPos-1) && mouseX < width/6*sPos){  
+    if(mouseX > width/nDisplays*(sPos-1) && mouseX < width/nDisplays*sPos){  
       // mouseX to kk_gridX
       mPos[0] = int(mouseX / (width/nDisplays/hCells));
       mPos[1] = int((height - mouseY) / (height/vCells));
