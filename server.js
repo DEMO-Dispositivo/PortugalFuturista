@@ -139,20 +139,313 @@ function sendSlider2ID(mID, val){
 
 function sendToMax(mData, id){
     var buf;
-    buf = osc.toBuffer({
-    address: mData.z,
-    args: [
-      {
-        type: "float",
-        value: mData.x
-      },
-      {
-        type: "float",
-        value: mData.y
-      }
-    ]
-  });
+    var adr = mData[0];
+    mData.splice(0, 1);
+    
+    switch(adr){
+      case '/kick':
+        buf = osc.toBuffer({
+        address: adr,
+        args: [
+          {
+            type: "integer",
+            value: parseInt(mData[0][0])
+          },
+          {
+            type: "integer",
+            value: mData[0][1]
+          },
+          {
+            type: "integer",
+            value: mData[0][2]
+          },
+          {
+            type: "integer",
+            value: mData[0][3]
+          },
+          {
+            type: "integer",
+            value: mData[0][4]
+          },
+          {
+            type: "integer",
+            value: mData[0][5]
+          },
+          {
+            type: "integer",
+            value: mData[0][6]
+          },
+          {
+            type: "integer",
+            value: mData[0][7]
+          },
+          {
+            type: "integer",
+            value: mData[0][8]
+          },
+          {
+            type: "integer",
+            value: mData[0][9]
+          },
+          {
+            type: "integer",
+            value: mData[0][10]
+          },
+          {
+            type: "integer",
+            value: mData[0][11]
+          },
+          {
+            type: "integer",
+            value: mData[0][12]
+          },
+          {
+            type: "integer",
+            value: mData[0][13]
+          },
+          {
+            type: "integer",
+            value: mData[0][14]
+          },
+          {
+            type: "integer",
+            value: mData[0][15]
+          },
+          {
+            type: "integer",
+            value: mData[0][16]
+          },
+          {
+            type: "integer",
+            value: mData[0][17]
+          },
+          {
+            type: "integer",
+            value: mData[0][18]
+          },
+          {
+            type: "integer",
+            value: mData[0][19]
+          }
+        ]
+      });
+      break;
+
+      case '/snare':
+        buf = osc.toBuffer({
+        address: adr,
+        args: [
+          {
+            type: "integer",
+            value: parseInt(mData[0][0])
+          },
+          {
+            type: "integer",
+            value: mData[0][1]
+          },
+          {
+            type: "integer",
+            value: mData[0][2]
+          },
+          {
+            type: "integer",
+            value: mData[0][3]
+          },
+          {
+            type: "integer",
+            value: mData[0][4]
+          },
+          {
+            type: "integer",
+            value: mData[0][5]
+          },
+          {
+            type: "integer",
+            value: mData[0][6]
+          },
+          {
+            type: "integer",
+            value: mData[0][7]
+          },
+          {
+            type: "integer",
+            value: mData[0][8]
+          },
+          {
+            type: "integer",
+            value: mData[0][9]
+          },
+          {
+            type: "integer",
+            value: mData[0][10]
+          },
+          {
+            type: "integer",
+            value: mData[0][11]
+          },
+          {
+            type: "integer",
+            value: mData[0][12]
+          },
+          {
+            type: "integer",
+            value: mData[0][13]
+          },
+          {
+            type: "integer",
+            value: mData[0][14]
+          },
+          {
+            type: "integer",
+            value: mData[0][15]
+          },
+          {
+            type: "integer",
+            value: mData[0][16]
+          },
+          {
+            type: "integer",
+            value: mData[0][17]
+          },
+          {
+            type: "integer",
+            value: mData[0][18]
+          },
+          {
+            type: "integer",
+            value: mData[0][19]
+          }
+        ]
+      });
+      break;
+
+      case '/hithat':
+        buf = osc.toBuffer({
+        address: adr,
+        args: [
+          {
+            type: "integer",
+            value: parseInt(mData[0][0])
+          },
+          {
+            type: "integer",
+            value: mData[0][1]
+          },
+          {
+            type: "integer",
+            value: mData[0][2]
+          },
+          {
+            type: "integer",
+            value: mData[0][3]
+          },
+          {
+            type: "integer",
+            value: mData[0][4]
+          },
+          {
+            type: "integer",
+            value: mData[0][5]
+          },
+          {
+            type: "integer",
+            value: mData[0][6]
+          },
+          {
+            type: "integer",
+            value: mData[0][7]
+          },
+          {
+            type: "integer",
+            value: mData[0][8]
+          },
+          {
+            type: "integer",
+            value: mData[0][9]
+          },
+          {
+            type: "integer",
+            value: mData[0][10]
+          },
+          {
+            type: "integer",
+            value: mData[0][11]
+          },
+          {
+            type: "integer",
+            value: mData[0][12]
+          },
+          {
+            type: "integer",
+            value: mData[0][13]
+          },
+          {
+            type: "integer",
+            value: mData[0][14]
+          },
+          {
+            type: "integer",
+            value: mData[0][15]
+          },
+          {
+            type: "integer",
+            value: mData[0][16]
+          },
+          {
+            type: "integer",
+            value: mData[0][17]
+          },
+          {
+            type: "integer",
+            value: mData[0][18]
+          },
+          {
+            type: "integer",
+            value: mData[0][19]
+          }
+        ]
+      });
+      break;
+
+      case '/bass':
+        buf = osc.toBuffer({
+        address: adr,
+        args: [
+          {
+            type: "integer",
+            value: mData[0]
+          },
+          {
+            type: "float",
+            value: mData[1]
+          },
+          {
+            type: "float",
+            value: mData[2]
+          }
+        ]
+      });
+      break;
+
+      default:
+        // send empty message
+        buf = osc.toBuffer({
+        address: '/empty',
+        args: [
+          {
+            type: "int",
+            value: -1
+          }
+        ]
+      });
+      break; 
+    }
+
+    
 
   return sock.send(buf, 0, buf.length, outport, "localhost"); 
 }   
 
+function grid2OSC(){
+
+}
