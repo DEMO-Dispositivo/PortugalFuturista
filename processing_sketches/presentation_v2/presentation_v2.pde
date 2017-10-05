@@ -11,6 +11,9 @@ Target bass;
 Bars sinewaves;
 Glitch glitch;
 
+int kickstep = 0, snarestep = 0, hhstep = 0; 
+boolean blackout = false;
+
 void setup(){
   // screen
   size(640, 480);
@@ -28,6 +31,11 @@ void setup(){
   hithat = new Grid(5);
   glitch = new Glitch(6);
   
+  // Colors
+  kick.stepColor = color(255, 0, 0);
+  snare.stepColor = color(0, 255, 0);
+  hithat.stepColor = color(0, 0, 255);
+
   // set UI appearance
   kick.sWeight = 2;
   bass.sWeight = 1;
@@ -38,12 +46,13 @@ void setup(){
 
 void draw(){
   background(0);
-  kick.drawUI();
+  kick.drawUI(kickstep);
   bass.drawUI();
-  snare.drawUI();
+  snare.drawUI(snarestep);
   sinewaves.drawUI();
-  hithat.drawUI();
+  hithat.drawUI(hhstep);
   glitch.drawUI();
+  if(blackout) background(0);
 }
 
 /* incoming osc message are forwarded to the oscEvent method. */
@@ -82,6 +91,23 @@ void oscEvent(OscMessage theOscMessage) {
     case "/glitch": 
       glitch.updateUI(theOscMessage.get(0).intValue(), theOscMessage.get(1).floatValue(), theOscMessage.get(2).floatValue());
       break;
+    
+    case "/kickstep":
+      kickstep = theOscMessage.get(0).intValue() -1;
+    break; 
+    case "/snarestep":
+      snarestep = theOscMessage.get(0).intValue() -1;
+    break; 
+    case "/hhstep":
+      hhstep = theOscMessage.get(0).intValue() -1;
+    break; 
+    
+    case "/blackout":
+      if(theOscMessage.get(0).intValue() > 0){
+        blackout = true; 
+      }
+      else blackout = false;
+    break; 
         
     default:
       println("OSC error: wrong address");

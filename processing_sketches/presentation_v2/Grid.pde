@@ -6,6 +6,7 @@ class Grid{
   int sPos; // screen position (1..6)
   // Grid Variables
   color mColor;
+  color stepColor;
   byte sWeight = 4; 
   int hCells, vCells; // num of horizontal and vertical cells in grid
   boolean grid[] = new boolean[hCells * vCells];
@@ -19,6 +20,7 @@ class Grid{
     hCells = 4;
     vCells = 5;
     mColor = color(255, 255, 255);
+    stepColor = color(255, 0, 0);
     grid = new boolean[hCells * vCells];
     initGrid();
     convertSpacing();
@@ -51,7 +53,7 @@ class Grid{
     convertSpacing();
   }
 /** FUNCTIONS ************************************************************/
-  void drawUI(){ // draw grid
+  void drawUI(int step){ // draw grid
     pushMatrix();
     rectMode(CORNER);
     stroke(mColor);
@@ -62,11 +64,16 @@ class Grid{
       float x = i*width/hCells; 
       for(int j = vCells-1; j > -1; j--){
         float y = j*height/vCells;
-        if(grid[ i*vCells + (vCells-1-j) ]) {
+        int index = i*vCells + (vCells-1-j);
+        if(grid[index]) {
           fill(mColor);
         }
         else fill(0);
         rect(x+hSpacing, y+vSpacing, width/hCells - hSpacing*2., height/vCells - vSpacing*2.);
+        if(index == step){
+          fill(stepColor);
+          rect(x+hSpacing, y+vSpacing, width/hCells - hSpacing*2., height/vCells - vSpacing*2.);
+        } 
       }
     }
     popMatrix();

@@ -325,6 +325,7 @@ function drawGlitch(){
 		for(var i = 0; i < vBlocks; i++){ // draw vertical blocks
 			for(var j = 0; j < hBlocks; j++){ //draw horizontal blocks
 				fill(random(1)*255);
+				noStroke();
 				var r;
 				var amt = pow((windowHeight - mPos[1]) / windowHeight, 2);
 				if(random(1)) r = random(pRand) * amt;
