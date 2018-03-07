@@ -41,18 +41,18 @@ class Bars{
   
 /** FUNCTIONS ************************************************************/
   void drawUI(){
-    pushMatrix();
+    pushStyle();
     rectMode(CORNER);
     stroke(mColor);
     noStroke();
     fill(mColor);
-    translate(width/nDisplays*(sPos), 0);
-    scale(1./nDisplays, 1.);
+    //translate(width/nDisplays*(sPos), 0);
+    //scale(1./nDisplays, 1.);
     for(int i = 0; i < numBars; i++){
       fill(255);
       rect(i*barWidth+hSpacing, height, barWidth-(hSpacing*2.), -(bars[i]*height));
     }
-    popMatrix();
+    popStyle();
   }
 
   void updateUI(int x, int y){

@@ -42,12 +42,12 @@ class Glitch{
     if(isOn>0) drawGlitch();
   }
   private void drawGlitch(){
-    pushMatrix();
+    pushStyle();
     rectMode(CENTER);
     noStroke();
     fill(mColor);
-    translate(width/nDisplays*(sPos), 0);
-    scale(1./nDisplays, 1.);
+    //translate(width/nDisplays*(sPos), 0);
+    //scale(1./nDisplays, 1.);
     for(int i = 0; i < vBlocks; i++){ // draw vertical blocks
       for(int j = 0; j < hBlocks; j++){ //draw horizontal blocks
         fill(random(1)*255);
@@ -60,7 +60,7 @@ class Glitch{
           rect(mPos[0] - (floor(hBlocks/2)*bSize) + j*bSize + r, mPos[1] - (floor(vBlocks/2)*bSize) + i*bSize + r, bSize, bSize);
         }
       }
-    popMatrix();
+    popStyle();
   }
   
   void updateUI(int on, float x, float y){

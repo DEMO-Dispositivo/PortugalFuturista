@@ -31,18 +31,18 @@ class Target{
   }
 
   private void drawTarget(){
-    pushMatrix();
+    pushStyle();
     rectMode(CORNER);
     stroke(mColor);
     strokeWeight(sWeight);
-    translate(width/nDisplays*(sPos-1), 0);
-    scale(1./nDisplays, 1.);
+    //translate(width/nDisplays*(sPos-1), 0);
+    //scale(1./nDisplays, 1.);
     // vertical line
     line(mPos[0], 0, mPos[0], height);
     // horizontal line
     line(0, mPos[1], width, mPos[1]);
     rect(mPos[0]-squareRadius, mPos[1]-squareRadius, squareRadius*2, squareRadius*2 );
-    popMatrix();
+    popStyle();
   }
   
   void updateUI(int on, float x, float y){

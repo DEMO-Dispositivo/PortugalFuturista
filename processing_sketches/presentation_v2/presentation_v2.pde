@@ -5,20 +5,31 @@ OscP5 oscP5;
 NetAddress myRemoteLocation;
 int inport = 8989;
 
+// Projector redimensioning
+int offset[] = {100, 100, 100, 100}; // {x left, y top, x right, y bottom} @default={0, 0, 0, 0}
+int nDisplays = 6; // total number of interface displays
+int this_width, this_height; // variables for projector redimensiong
+float scaleX, scaleY;
+
+boolean blackout = false; 
+int kickstep = 0, snarestep = 0, hhstep = 0; 
+
 // User Interfaces
 Grid kick, snare, hithat;
 Target bass;
 Bars sinewaves;
 Glitch glitch;
 
-int kickstep = 0, snarestep = 0, hhstep = 0; 
-boolean blackout = false;
-
 void setup(){
   // screen
-  size(640, 480);
-  //fullScreen();
+  //size(640, 480);
+  fullScreen(1);
   background(0);
+  
+  this_width = width - offset[0] - offset[2];
+  this_height = height - offset[1] - offset[3];
+  scaleX = (float)this_width / width;
+  scaleY = (float)this_height / height;
   
   // init OSC
   oscP5 = new OscP5(this,inport);
@@ -46,12 +57,51 @@ void setup(){
 
 void draw(){
   background(0);
+  
+  pushMatrix();
+  translate(this_width/nDisplays*(0) + offset[0], offset[1]);
+  scale(scaleX/nDisplays, scaleY);
   kick.drawUI(kickstep);
+  popMatrix();
+  
+  pushMatrix();
+  translate(this_width/nDisplays*(1) + offset[0], offset[1]);
+  scale(scaleX/nDisplays, scaleY);
   bass.drawUI();
+  popMatrix();
+  
+  pushMatrix();
+  translate(this_width/nDisplays*(2) + offset[0], offset[1]);
+  scale(scaleX/nDisplays, scaleY);
   snare.drawUI(snarestep);
+  popMatrix();
+  
+  pushMatrix();
+  translate(this_width/nDisplays*(3) + offset[0], offset[1]);
+  scale(scaleX/nDisplays, scaleY);
   sinewaves.drawUI();
-  hithat.drawUI(hhstep);
+  popMatrix();
+  
+  pushMatrix();
+  translate(this_width/nDisplays*(5) + offset[0], offset[1]);
+  scale(scaleX/nDisplays, scaleY);
   glitch.drawUI();
+  popMatrix();
+  
+  pushMatrix();
+  translate(this_width/nDisplays*(4) + offset[0], offset[1]);
+  scale(scaleX/nDisplays, scaleY);
+  hithat.drawUI(hhstep);
+  popMatrix();
+  
+  
+  // cover margins 
+  noStroke();
+  fill(0);
+  rect(0, 0, width, offset[1]); // top bar
+  rect(0, height-offset[3], width, height); // bottom bar
+  rect(0, 0, offset[1], height);// left bar
+  rect(width-offset[2], 0, width, height); // right bar
   if(blackout) background(0);
 }
 

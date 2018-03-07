@@ -54,12 +54,12 @@ class Grid{
   }
 /** FUNCTIONS ************************************************************/
   void drawUI(int step){ // draw grid
-    pushMatrix();
+    pushStyle();
     rectMode(CORNER);
     stroke(mColor);
     strokeWeight(sWeight);
-    translate(width/nDisplays*(sPos), 0);
-    scale(1./nDisplays, 1.);
+    //translate(width/nDisplays*(sPos), 0);
+    //scale(1./nDisplays, 1.);
     for(int i = hCells-1; i > -1; i--){
       float x = i*width/hCells; 
       for(int j = vCells-1; j > -1; j--){
@@ -76,7 +76,7 @@ class Grid{
         } 
       }
     }
-    popMatrix();
+    popStyle();
   }
   
   void updateMousePosition(){

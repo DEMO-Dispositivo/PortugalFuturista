@@ -270,7 +270,20 @@ function drawGrid(){
 		for(var j = vCells-1; j > -1; j--){
 			var y = j*windowHeight/vCells;
 			if(grid[ i*vCells + (vCells-1-j) ] > 0) {
-				fill(mColor);
+				switch(voice){
+					case 0:
+					fill(255, 0, 0);
+					break;
+					case 2:
+					fill(0, 255, 0);
+					break;
+					case 4:
+					fill(0, 0, 255);
+					break;
+					default:
+					fill(mColor);
+					break;
+				}
 				//console.log("hello");
 			}
 			else fill(0);
