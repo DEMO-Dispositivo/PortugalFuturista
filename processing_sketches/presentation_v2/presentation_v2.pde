@@ -6,13 +6,15 @@ NetAddress myRemoteLocation;
 int inport = 8989;
 
 // Projector redimensioning
-int offset[] = {100, 100, 100, 100}; // {x left, y top, x right, y bottom} @default={0, 0, 0, 0}
+int offset[] = {0, 0, 0, 0}; // {x left, y top, x right, y bottom} @default={0, 0, 0, 0}
 int nDisplays = 6; // total number of interface displays
 int this_width, this_height; // variables for projector redimensiong
 float scaleX, scaleY;
 
 boolean blackout = false; 
 int kickstep = 0, snarestep = 0, hhstep = 0; 
+boolean strobeON = false;
+int strobeVal = 0; 
 
 // User Interfaces
 Grid kick, snare, hithat;
@@ -94,7 +96,7 @@ void draw(){
   hithat.drawUI(hhstep);
   popMatrix();
   
-  
+  if(strobeON) drawStrobe(strobeVal);
   // cover margins 
   noStroke();
   fill(0);
@@ -103,6 +105,7 @@ void draw(){
   rect(0, 0, offset[1], height);// left bar
   rect(width-offset[2], 0, width, height); // right bar
   if(blackout) background(0);
+  
 }
 
 /* incoming osc message are forwarded to the oscEvent method. */
@@ -158,6 +161,17 @@ void oscEvent(OscMessage theOscMessage) {
       }
       else blackout = false;
     break; 
+    
+    case "/strobeON":
+      if(theOscMessage.get(0).intValue() > 0){
+        strobeON = true;
+      }
+      else strobeON = false;
+    break; 
+    
+    case "/strobe":
+      strobeVal = theOscMessage.get(0).intValue();
+    break; 
         
     default:
       println("OSC error: wrong address");
@@ -175,4 +189,33 @@ void parseBlob2Bars(OscMessage m, Bars b){
   for(int i = 0; i < b.bars.length; i++){
     b.bars[i] = m.get(i).floatValue();
   }
+}
+
+void drawStrobe(int v){
+  pushStyle();
+  noStroke();
+  int r = ((int)random(2) + 1) * v;
+  
+  switch (r){
+    case 0: 
+    fill(0);
+    break; 
+    
+    case 1: 
+    fill(255, 0, 0);
+    break;
+    
+    case 2: 
+    fill(0, 0, 255);
+    break;
+    
+    case 3: 
+    fill(0, 255, 0);
+    break;
+    
+    default:
+    break;    
+  }
+  rect(0, 0, width, height);
+  popStyle();
 }
